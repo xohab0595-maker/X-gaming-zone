@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>X Gaming Zone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #101020;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+      padding: 25px 10px;
+    }
+    h1 {
+      color: cyan;
+      font-size: 34px;
+    }
+    .game {
+      background: #202040;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 400px;
+      margin: 25px auto;
+    }
+    button {
+      background: cyan;
+      color: #101020;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 8px;
+    }
+    #score {
+      font-size: 35px;
+      color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎮 X GAMING ZONE</h1>
+  <p>Welcome to my gaming website!</p>
+
+  <div class="game">
+    <h2>⚡ 10 Second Click Challenge</h2>
+
+    <p>Score:</p>
+    <div id="score">0</div>
+
+    <h3 id="timer">Time: 10</h3>
+
+    <button id="start" onclick="startGame()">START GAME</button>
+    <button id="click" onclick="addScore()" disabled>CLICK ME!</button>
+
+    <h3 id="message">Press Start to play!</h3>
+  </div>
+
+  <script>
+    let score = 0;
+    let time = 10;
+    let playing = false;
+    let countdown;
+
+    function startGame() {
+      if (playing) return;
+
+      score = 0;
+      time = 10;
+      playing = true;
+
+      document.getElementById("score").innerText = score;
+      document.getElementById("timer").innerText = "Time: " + time;
+      document.getElementById("message").innerText = "Go! Go! Go!";
+      document.getElementById("click").disabled = false;
+      document.getElementById("start").disabled = true;
+
+      countdown = setInterval(function() {
+        time--;
+        document.getElementById("timer").innerText = "Time: " + time;
+
+        if (time <= 0) {
+          clearInterval(countdown);
+          playing = false;
+          document.getElementById("click").disabled = true;
+          document.getElementById("start").disabled = false;
+          document.getElementById("message").innerText =
+            "Game Over! Your score: " + score;
+        }
+      }, 1000);
+    }
+
+    function addScore() {
+      if (!playing) return;
+
+      score++;
+      document.getElementById("score").innerText = score;
+    }
+  </script>
+
+</body>
+</html>
