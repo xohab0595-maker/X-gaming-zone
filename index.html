@@ -2,103 +2,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>X Gaming Zone</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background: #101020;
-      color: white;
-      font-family: Arial;
-      text-align: center;
-      padding: 25px 10px;
-    }
-    h1 {
-      color: cyan;
-      font-size: 34px;
-    }
-    .game {
-      background: #202040;
-      padding: 25px;
-      border-radius: 15px;
-      max-width: 400px;
-      margin: 25px auto;
-    }
-    button {
-      background: cyan;
-      color: #101020;
-      border: none;
-      padding: 15px 25px;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      margin: 8px;
-    }
-    #score {
-      font-size: 35px;
-      color: yellow;
-    }
-  </style>
+<title>X Gaming Zone</title>
+<style>
+body {
+  background: #101020;
+  color: white;
+  text-align: center;
+  font-family: Arial;
+  padding: 30px;
+}
+h1 { color: cyan; }
+button, select {
+  padding: 12px 20px;
+  margin: 8px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#clickBtn { background: cyan; }
+</style>
 </head>
 <body>
 
-  <h1>🎮 X GAMING ZONE</h1>
-  <p>Welcome to my gaming website!</p>
+<h1>🎮 X GAMING ZONE</h1>
+<p>Welcome to my gaming website!</p>
+<h2>Click Challenge</h2>
 
-  <div class="game">
-    <h2>⚡ 10 Second Click Challenge</h2>
+<p>Choose your time:</p>
+<select id="timeChoice">
+  <option value="15">15 Seconds</option>
+  <option value="10">10 Seconds</option>
+  <option value="5">5 Seconds</option>
+</select>
 
-    <p>Score:</p>
-    <div id="score">0</div>
+<br>
+<button onclick="startGame()">Start Game</button>
+<button id="clickBtn" onclick="clickMe()" disabled>Click Me!</button>
 
-    <h3 id="timer">Time: 10</h3>
+<h2>Time: <span id="time">0</span></h2>
+<h2>Score: <span id="score">0</span></h2>
+<h3 id="message"></h3>
 
-    <button id="start" onclick="startGame()">START GAME</button>
-    <button id="click" onclick="addScore()" disabled>CLICK ME!</button>
+<script>
+let score = 0;
+let timeLeft = 10;
+let timer;
+let playing = false;
 
-    <h3 id="message">Press Start to play!</h3>
-  </div>
+function startGame() {
+  clearInterval(timer);
+  score = 0;
+  timeLeft = Number(document.getElementById("timeChoice").value);
+  playing = true;
 
-  <script>
-    let score = 0;
-    let time = 10;
-    let playing = false;
-    let countdown;
+  document.getElementById("score").textContent = score;
+  document.getElementById("time").textContent = timeLeft;
+  document.getElementById("message").textContent = "Go! Go! Go!";
+  document.getElementById("clickBtn").disabled = false;
 
-    function startGame() {
-      if (playing) return;
+  timer = setInterval(function() {
+    timeLeft--;
+    document.getElementById("time").textContent = timeLeft;
 
-      score = 0;
-      time = 10;
-      playing = true;
-
-      document.getElementById("score").innerText = score;
-      document.getElementById("timer").innerText = "Time: " + time;
-      document.getElementById("message").innerText = "Go! Go! Go!";
-      document.getElementById("click").disabled = false;
-      document.getElementById("start").disabled = true;
-
-      countdown = setInterval(function() {
-        time--;
-        document.getElementById("timer").innerText = "Time: " + time;
-
-        if (time <= 0) {
-          clearInterval(countdown);
-          playing = false;
-          document.getElementById("click").disabled = true;
-          document.getElementById("start").disabled = false;
-          document.getElementById("message").innerText =
-            "Game Over! Your score: " + score;
-        }
-      }, 1000);
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      playing = false;
+      document.getElementById("clickBtn").disabled = true;
+      document.getElementById("message").textContent =
+        "Game Over! Your score is " + score;
     }
+  }, 1000);
+}
 
-    function addScore() {
-      if (!playing) return;
-
-      score++;
-      document.getElementById("score").innerText = score;
-    }
-  </script>
+function clickMe() {
+  if (playing) {
+    score++;
+    document.getElementById("score").textContent = score;
+  }
+}
+</script>
 
 </body>
 </html>
+
+    
